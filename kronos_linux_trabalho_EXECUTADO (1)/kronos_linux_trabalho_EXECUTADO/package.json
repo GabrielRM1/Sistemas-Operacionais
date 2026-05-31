@@ -1,0 +1,14 @@
+{
+  "name": "kronos-linux",
+  "version": "1.0.0",
+  "description": "Dashboard web de monitoramento Linux com práticas DevOps, CI/CD, Docker, Kubernetes e testes automatizados.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node scripts/build.js",
+    "test": "node tests/structure.test.js && node tests/app.test.js"
+  },
+  "keywords": ["linux", "devops", "docker", "kubernetes", "ci-cd", "monitoramento"],
+  "author": "Grupo KRONOS/LINUX",
+  "license": "MIT"
+}

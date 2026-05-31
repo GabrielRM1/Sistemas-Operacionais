@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kronos-linux
+  labels:
+    app: kronos-linux
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kronos-linux
+  template:
+    metadata:
+      labels:
+        app: kronos-linux
+    spec:
+      containers:
+        - name: kronos-linux
+          image: kronos-linux:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: kronos-linux-config
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 20

@@ -1,0 +1,9 @@
+services:
+  kronos-linux:
+    build: .
+    container_name: kronos-linux
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+    restart: unless-stopped

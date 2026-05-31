@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KRONOS/LINUX - Dashboard DevOps</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="square"></span><strong>KRONOS/LINUX</strong></div>
+    <div class="meta">ROOT@ALPHA-01 &nbsp; UBUNTU 24.04 LTS &nbsp; KERNEL 6.8.0-45 &nbsp; UPTIME 142:13:55</div>
+    <div class="status">● SYSTEMD: RUNNING</div>
+    <button>APT UPGRADE</button>
+  </header>
+
+  <main class="layout">
+    <aside>
+      <a class="active">OVERVIEW</a>
+      <a>CPU & RAM <small>57%</small></a>
+      <a>DISK <small>48%</small></a>
+      <a>PROCESSES <small>13</small></a>
+      <a>CONTAINERS <small>R1</small></a>
+      <a>LOGS <small class="fail">F3</small></a>
+    </aside>
+
+    <section class="content">
+      <h1>Dashboard de Monitoramento Linux</h1>
+      <p class="subtitle">Sistema web para demonstrar conceitos de Sistemas Operacionais, DevOps, Docker, Kubernetes, CI/CD e testes automatizados.</p>
+
+      <div class="grid cards3">
+        <article class="card">
+          <div class="label">CPU LOAD</div>
+          <strong class="metric">47.6%</strong>
+          <div class="bars orange"></div>
+        </article>
+        <article class="card">
+          <div class="label">RAM USAGE</div>
+          <strong class="metric">11.7 GB</strong>
+          <div class="progress"><span style="width:73%"></span></div>
+          <p>0GB <span>16GB TOTAL</span></p>
+        </article>
+        <article class="card">
+          <div class="label">DISK STORAGE</div>
+          <strong class="metric">490 GB</strong>
+          <div class="diskblocks"></div>
+          <p>48% USED <span>1024GB TOTAL</span></p>
+        </article>
+      </div>
+
+      <div class="grid cards2">
+        <article class="card">
+          <div class="card-head"><span>TOP PROCESSES</span><b>VIEW ALL →</b></div>
+          <table>
+            <tr><td>dockerd</td><td>11.4%</td></tr>
+            <tr><td>postgres: 15/main</td><td>9.6%</td></tr>
+            <tr><td>python3 worker.py</td><td>8.5%</td></tr>
+            <tr><td>nginx: master process</td><td>5.3%</td></tr>
+            <tr><td>systemd-journald</td><td>2.8%</td></tr>
+          </table>
+        </article>
+        <article class="card">
+          <div class="card-head"><span>CONTAINERS</span><b>VIEW ALL →</b></div>
+          <div class="containers">
+            <div>API_v2<br><em>UP · 14d</em></div>
+            <div>AUTH_SRV<br><em>UP · 4d</em></div>
+            <div>QUEUE_WK<br><em>UP · 1m</em></div>
+            <div>DB_REPLICA<br><em>UP · 1m</em></div>
+          </div>
+        </article>
+      </div>
+
+      <article class="card logs">
+        <div class="card-head"><span>RECENT LOGS</span><b>VIEW STREAM →</b></div>
+        <pre>[17:13:22] WARN: kernel: TCP: out of memory -- consider tuning tcp_mem
+[17:13:24] INFO: systemd-logind: New session c6551 of user www-data
+[17:13:31] DEBG: kernel: net_ratelimit: 40 callbacks suppressed
+[17:13:35] FAIL: kernel: Out of memory: Killed process 7461 (java)
+[17:14:36] WARN: systemd[1]: nginx.service: Main process exited</pre>
+      </article>
+    </section>
+  </main>
+  <footer>TTY: PTS/0 &nbsp;&nbsp; SHELL: /BIN/BASH 5.2.21 &nbsp;&nbsp; PID 1: SYSTEMD 255 &nbsp;&nbsp; ● journald: streaming</footer>
+</body>
+</html>

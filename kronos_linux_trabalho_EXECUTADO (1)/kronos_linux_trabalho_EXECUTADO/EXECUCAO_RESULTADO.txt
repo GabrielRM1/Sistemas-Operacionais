@@ -1,0 +1,80 @@
+================ RESULTADO DA EXECUCAO ================
+
+OBS: nesta execução foi usada a porta 3000 porque a porta 8080 estava ocupada no ambiente de teste.
+
+$ npm test
+
+> kronos-linux@1.0.0 test
+> node tests/structure.test.js && node tests/app.test.js
+
+OK: README.md
+OK: COMO_EXECUTAR.md
+OK: server.js
+OK: src/index.html
+OK: src/style.css
+OK: Dockerfile
+OK: docker-compose.yml
+OK: .github/workflows/ci-cd.yml
+OK: k8s/deployment.yaml
+OK: k8s/service.yaml
+OK: k8s/configmap.yaml
+OK: scripts/monitoramento.sh
+OK: scripts/backup.sh
+OK: scripts/limpeza_logs.sh
+OK: scripts/start_app.sh
+OK: scripts/healthcheck.sh
+Teste estrutural aprovado.
+OK tela: KRONOS/LINUX
+OK tela: CPU LOAD
+OK tela: RAM USAGE
+OK tela: DISK STORAGE
+OK tela: TOP PROCESSES
+OK tela: CONTAINERS
+OK tela: RECENT LOGS
+Teste da aplicação aprovado.
+
+$ npm run build
+
+> kronos-linux@1.0.0 build
+> node scripts/build.js
+
+Build executado com sucesso: arquivos copiados para dist/
+
+$ ./scripts/monitoramento.sh
+[2026-05-28 15:22:47] CPU_LOAD=0.00 MEM_USED=693MB/4096MB DISK_USED=1% PROCESSOS=23
+Top 5 processos por uso de CPU:
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root      2777  166  0.1  14608  7800 ?        R    15:22   0:00 ps aux --sort=-%cpu
+root      2778 33.3  0.0  10656  3480 ?        S    15:22   0:00 head -n 6
+root      2757 20.5  0.1  12124  5784 ?        S    15:22   0:00 /bin/bash ./scripts/monitoramento.sh
+oai       2038  4.1 11.5 74185336 482552 ?     Ssl  15:15   0:16 /opt/pyvenv/lib/python3.13/site-packages/artifact_tool/bin/artifact_tool_rpc_daemon-bun
+root      2707  3.2  0.1  12256  5576 ?        S    15:22   0:00 bash -lc cd /mnt/data/kronos_linux_trabalho_EXECUTADO && { echo '================ RESULTADO DA EXECUCAO ================'; echo; echo 'OBS: nesta execu????o foi usada a porta 3000 porque a porta 8080 estava ocupada no ambiente de teste.'; echo; echo '$ npm test'; npm test; echo; echo '$ npm run build'; npm run build; echo; echo '$ ./scripts/monitoramento.sh'; ./scripts/monitoramento.sh; echo; echo '$ PORT=3000 npm start (rodando em segundo plano para testar)'; PORT=3000 node server.js > logs/server.log 2>&1 & echo $! > logs/server.pid; sleep 1; cat logs/server.log; echo; echo '$ ./scripts/healthcheck.sh http://localhost:3000/health'; ./scripts/healthcheck.sh http://localhost:3000/health; echo; echo '$ curl http://localhost:3000/api/metrics'; curl -s http://localhost:3000/api/metrics; echo; echo; echo '$ ./scripts/backup.sh'; ./scripts/backup.sh; echo; echo '$ ./scripts/limpeza_logs.sh'; ./scripts/limpeza_logs.sh; echo; echo 'Aplica????o testada com sucesso em http://localhost:3000'; kill $(cat logs/server.pid) 2>/dev/null || true; } | tee EXECUCAO_RESULTADO.txt # update docs mention port alternative cat >> COMO_EXECUTAR.md <<'EOF'  ## Observa????o sobre porta ocupada  Se a porta 8080 j?? estiver ocupada, execute em outra porta:  ```bash PORT=3000 npm start ```  E teste com:  ```bash ./scripts/healthcheck.sh http://localhost:3000/health ``` EOF rm -f /mnt/data/kronos_linux_trabalho_EXECUTADO.zip cd /mnt/data && zip -qr kronos_linux_trabalho_EXECUTADO.zip kronos_linux_trabalho_EXECUTADO ls -lh /mnt/data/kronos_linux_trabalho_EXECUTADO.zip && tail -30 /mnt/data/kronos_linux_trabalho_EXECUTADO/EXECUCAO_RESULTADO.txt
+
+$ PORT=3000 npm start (rodando em segundo plano para testar)
+KRONOS/LINUX executando em http://localhost:3000
+
+$ ./scripts/healthcheck.sh http://localhost:3000/health
+OK: aplicação respondendo em http://localhost:3000/health
+
+$ curl http://localhost:3000/api/metrics
+{
+  "app": "KRONOS/LINUX",
+  "status": "RUNNING",
+  "uptime_seconds": 427,
+  "cpu_load": "0.00",
+  "memory": {
+    "total_mb": 4096,
+    "used_mb": 806,
+    "free_mb": 3290
+  },
+  "platform": "linux",
+  "arch": "x64"
+}
+
+$ ./scripts/backup.sh
+Backup criado em backups/backup_logs_20260528_152248.tar.gz
+
+$ ./scripts/limpeza_logs.sh
+Limpeza concluída. Logs com mais de 7 dias foram removidos.
+
+Aplicação testada com sucesso em http://localhost:3000
