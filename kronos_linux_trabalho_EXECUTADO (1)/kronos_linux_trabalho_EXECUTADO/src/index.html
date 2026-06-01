@@ -3,83 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KRONOS/LINUX - Dashboard DevOps</title>
+  <title>KRONOS/LINUX PRO - Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand"><span class="square"></span><strong>KRONOS/LINUX</strong></div>
-    <div class="meta">ROOT@ALPHA-01 &nbsp; UBUNTU 24.04 LTS &nbsp; KERNEL 6.8.0-45 &nbsp; UPTIME 142:13:55</div>
-    <div class="status">● SYSTEMD: RUNNING</div>
-    <button>APT UPGRADE</button>
-  </header>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>KRONOS/LINUX</h1>
+          <span>PRO MONITOR</span>
+        </div>
+      </div>
 
-  <main class="layout">
-    <aside>
-      <a class="active">OVERVIEW</a>
-      <a>CPU & RAM <small>57%</small></a>
-      <a>DISK <small>48%</small></a>
-      <a>PROCESSES <small>13</small></a>
-      <a>CONTAINERS <small>R1</small></a>
-      <a>LOGS <small class="fail">F3</small></a>
+      <nav class="menu">
+        <button class="menu-item active" data-section="overview">Overview</button>
+        <button class="menu-item" data-section="metricas">Métricas</button>
+        <button class="menu-item" data-section="processos">Processos</button>
+        <button class="menu-item" data-section="containers">Containers</button>
+        <button class="menu-item" data-section="logs">Logs</button>
+      </nav>
+
+      <div class="status-box">
+        <span class="dot"></span>
+        <div>
+          <strong>SYSTEMD</strong>
+          <small>RUNNING</small>
+        </div>
+      </div>
     </aside>
 
-    <section class="content">
-      <h1>Dashboard de Monitoramento Linux</h1>
-      <p class="subtitle">Sistema web para demonstrar conceitos de Sistemas Operacionais, DevOps, Docker, Kubernetes, CI/CD e testes automatizados.</p>
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">ROOT@ALPHA-01 • UBUNTU 24.04 LTS</p>
+          <h2>Dashboard de Monitoramento Linux</h2>
+        </div>
 
-      <div class="grid cards3">
-        <article class="card">
-          <div class="label">CPU LOAD</div>
-          <strong class="metric">47.6%</strong>
-          <div class="bars orange"></div>
-        </article>
-        <article class="card">
-          <div class="label">RAM USAGE</div>
-          <strong class="metric">11.7 GB</strong>
-          <div class="progress"><span style="width:73%"></span></div>
-          <p>0GB <span>16GB TOTAL</span></p>
-        </article>
-        <article class="card">
-          <div class="label">DISK STORAGE</div>
-          <strong class="metric">490 GB</strong>
-          <div class="diskblocks"></div>
-          <p>48% USED <span>1024GB TOTAL</span></p>
-        </article>
-      </div>
+        <div class="actions">
+          <button id="btn-health">Verificar serviço</button>
+          <button id="btn-refresh" class="primary">Atualizar métricas</button>
+        </div>
+      </header>
 
-      <div class="grid cards2">
-        <article class="card">
-          <div class="card-head"><span>TOP PROCESSES</span><b>VIEW ALL →</b></div>
-          <table>
-            <tr><td>dockerd</td><td>11.4%</td></tr>
-            <tr><td>postgres: 15/main</td><td>9.6%</td></tr>
-            <tr><td>python3 worker.py</td><td>8.5%</td></tr>
-            <tr><td>nginx: master process</td><td>5.3%</td></tr>
-            <tr><td>systemd-journald</td><td>2.8%</td></tr>
-          </table>
-        </article>
-        <article class="card">
-          <div class="card-head"><span>CONTAINERS</span><b>VIEW ALL →</b></div>
-          <div class="containers">
-            <div>API_v2<br><em>UP · 14d</em></div>
-            <div>AUTH_SRV<br><em>UP · 4d</em></div>
-            <div>QUEUE_WK<br><em>UP · 1m</em></div>
-            <div>DB_REPLICA<br><em>UP · 1m</em></div>
+      <section id="overview" class="section active">
+        <div class="hero">
+          <div>
+            <h3>Ambiente Docker em execução</h3>
+            <p>Projeto demonstrando conceitos de Sistemas Operacionais, Docker, API Node.js, métricas do sistema e monitoramento.</p>
           </div>
-        </article>
-      </div>
+          <div class="terminal-card">
+            <span>$ docker compose up --build</span>
+            <strong>localhost:8080</strong>
+          </div>
+        </div>
 
-      <article class="card logs">
-        <div class="card-head"><span>RECENT LOGS</span><b>VIEW STREAM →</b></div>
-        <pre>[17:13:22] WARN: kernel: TCP: out of memory -- consider tuning tcp_mem
-[17:13:24] INFO: systemd-logind: New session c6551 of user www-data
-[17:13:31] DEBG: kernel: net_ratelimit: 40 callbacks suppressed
-[17:13:35] FAIL: kernel: Out of memory: Killed process 7461 (java)
-[17:14:36] WARN: systemd[1]: nginx.service: Main process exited</pre>
-      </article>
-    </section>
-  </main>
-  <footer>TTY: PTS/0 &nbsp;&nbsp; SHELL: /BIN/BASH 5.2.21 &nbsp;&nbsp; PID 1: SYSTEMD 255 &nbsp;&nbsp; ● journald: streaming</footer>
+        <div class="cards">
+          <article class="card">
+            <span>CPU LOAD</span>
+            <strong id="cpu-value">--</strong>
+            <div class="bar"><i id="cpu-bar"></i></div>
+          </article>
+
+          <article class="card">
+            <span>MEMÓRIA USADA</span>
+            <strong id="ram-value">--</strong>
+            <div class="bar"><i id="ram-bar"></i></div>
+          </article>
+
+          <article class="card">
+            <span>PLATAFORMA</span>
+            <strong id="platform-value">--</strong>
+            <p id="arch-value">Arquitetura: --</p>
+          </article>
+
+          <article class="card">
+            <span>UPTIME</span>
+            <strong id="uptime-value">--</strong>
+            <p>Tempo ativo do container</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="metricas" class="section">
+        <h3>Métricas da API</h3>
+        <pre id="api-output">Clique em "Atualizar métricas" para carregar os dados.</pre>
+      </section>
+
+      <section id="processos" class="section">
+        <h3>Processos simulados</h3>
+        <div class="table">
+          <div><strong>dockerd</strong><span>11.4%</span></div>
+          <div><strong>postgres: 15/main</strong><span>9.6%</span></div>
+          <div><strong>python3 worker.py</strong><span>8.5%</span></div>
+          <div><strong>nginx: master process</strong><span>5.3%</span></div>
+          <div><strong>systemd-journald</strong><span>2.8%</span></div>
+        </div>
+      </section>
+
+      <section id="containers" class="section">
+        <h3>Containers</h3>
+        <div class="container-grid">
+          <div class="container-card"><strong>KRONOS-LINUX</strong><span>UP • localhost:8080</span></div>
+          <div class="container-card"><strong>API_v2</strong><span>UP • 14d</span></div>
+          <div class="container-card"><strong>AUTH_SRV</strong><span>UP • 4d</span></div>
+          <div class="container-card"><strong>DB_REPLICA</strong><span>UP • 1m</span></div>
+        </div>
+      </section>
+
+      <section id="logs" class="section">
+        <h3>Logs do sistema</h3>
+        <pre class="logs" id="logs-output">
+[INFO] KRONOS/LINUX iniciado com sucesso
+[INFO] Servidor Node.js ativo na porta 8080
+[INFO] API /health disponível
+[INFO] API /api/metrics disponível
+[OK] Container Docker em execução
+        </pre>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="app.js"></script>
 </body>
 </html>
